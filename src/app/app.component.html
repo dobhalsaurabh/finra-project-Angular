@@ -1,21 +1,71 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+<h1> FINRA project </h1>
+<div class="container" style="align-content: center">
+  <div class="row">
+    <div class="col-md-12">
+      <form [formGroup]="searchForm">
+
+        <mat-form-field>
+          <mat-label>Phone Number</mat-label>
+          <input matInput formControlName="phoneNumber" required>
+          <mat-error *ngIf="searchForm.get('phoneNumber').hasError('pattern')">
+            Phone number must have 7 or 10 digits
+          </mat-error>
+        </mat-form-field>
+
+        &nbsp; &nbsp;
+        <button mat-raised-button (click)="searchPhone()"> SEARCH</button>
+      </form>
+      <div class="mat-elevation-z8" *ngIf="showResults" style="width: 50%">
+
+      <table mat-table [dataSource]="tableData" >
+
+
+        <ng-container matColumnDef="phoneNumber">
+          <mat-header-cell  *matHeaderCellDef> Phone Number </mat-header-cell >
+          <mat-cell  *matCellDef="let element"> {{element.phoneNumber}} </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
+
+        <tr mat-row nthChild [ngClass]='{ highlight: index%2 ==1}' *matRowDef="let row; columns: displayColumns;"></tr>
+
+      </table>
+          <ul >
+            <li>
+              <a [hidden]="disableLast" [routerLink]="" (click)="getPage('last')">Last</a>
+            </li>
+            <li>
+              <a [hidden]="disableNext" [routerLink]="" (click)="getPage('next')">Next</a>
+            </li>
+            <li>
+             page: {{page + 1}} of {{lastPage + 1}}
+            </li>
+            <li>
+              <a [hidden]="disablePrevious" [routerLink]="" (click)="getPage('previous')">Previous</a>
+            </li>
+            <li>
+              <a [hidden]="disableFirst" [routerLink]="" (click)="getPage('first')">First</a>
+            </li>
+            <li>
+                <label>page size: </label>
+                <select [(ngModel)]="pageSize" (change)="pageSizeChanged()">
+                  <option *ngFor="let item of sizeList" [value]="item.value">
+                    {{item.value}}
+                  </option>
+                </select>
+            </li>
+
+          </ul>
+
+
+
+      </div>
+
+
+
+    </div>
+  </div>
 </div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+
 
 <router-outlet></router-outlet>
